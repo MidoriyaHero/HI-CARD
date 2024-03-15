@@ -41,7 +41,7 @@ def main():
     # Main app
     st.title("QR Code Generator")
     #change path here when deploy
-    data_to_encode = 'http://localhost:8080/?uid=' + user_info['localId']
+    data_to_encode = 'https://show-info.streamlit.app/?uid=' + user_info['localId']
     doc_ref = db.collection("Users").document(user_info['localId'])
     doc = doc_ref.get()
     dic = doc.to_dict()
