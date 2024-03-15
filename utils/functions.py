@@ -7,8 +7,8 @@ from time import sleep
 from streamlit.runtime.scriptrunner import get_script_run_ctx
 from streamlit.source_util import get_pages
 
-
-
+key_dict = json.loads(st.secrets["firebasekey"])
+api = key_dict['api']
 
 def create_user(email, password,username):
     user = auth.create_user(email = email, password = password,uid="user-"+email,display_name = username)
@@ -19,7 +19,7 @@ def create_user(email, password,username):
 def user_sign_in(email, password, return_secure_token=True):
     payload = json.dumps({"email":email, "password":password, "return_secure_token":return_secure_token})
     #change API KEY to your API key
-    FIREBASE_WEB_API_KEY = 'AIzaSyD66lk98aE-aFsIhyRSJikEiWInlE8Blmc' 
+    FIREBASE_WEB_API_KEY = api
     rest_api_url = "https://identitytoolkit.googleapis.com/v1/accounts:signInWithPassword"
 
     r = requests.post(rest_api_url,
