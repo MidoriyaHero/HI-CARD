@@ -16,7 +16,7 @@ def is_valid_email(email):
   return bool(re.match(regex, email))
 
 def create_user(email, password,username):
-    if is_valid_email(email):
+    if is_valid_email(email) == True:
         user = auth.create_user(email = email, password = password,uid="user-"+email,display_name = username)
         st.success('Account created successfully!')
         st.markdown('Please Login using your email and password')
