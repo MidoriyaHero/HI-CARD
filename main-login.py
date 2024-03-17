@@ -26,7 +26,7 @@ def main():
             functions.create_user(email = email, password = password,username=username)
 
 if __name__ == "__main__":
-    st.set_page_config(page_title="HI-card", layout="centered", initial_sidebar_state="collapsed")
+    st.set_page_config(page_title="HI-card", layout="centered")
     st.title("Welcome to HI card 🪪")
     key_dict = json.loads(st.secrets["textkey"])
     creds = credentials.Certificate(key_dict)

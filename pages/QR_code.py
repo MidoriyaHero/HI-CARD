@@ -45,16 +45,18 @@ def main():
     doc_ref = db.collection("Users").document(user_info['localId'])
     doc = doc_ref.get()
     dic = doc.to_dict()
-
-    if dic.get('QR') is not None:
-        download_and_display_qr_code(dic.get('QR'))
-    else:
+    if info == True:
+        st.warning('Please complete your profile')
+    elif dic is None:
+        if st.button("Generate QR Code", type="primary"):
+            qr_code_bytes = generate_qr_code_bytes(data_to_encode)
+            download_and_display_qr_code(qr_code_bytes)
         
-        st.button("Generate QR Code", type="primary")
-        qr_code_bytes = generate_qr_code_bytes(data_to_encode)
-        download_and_display_qr_code(qr_code_bytes)
+    else:
+        download_and_display_qr_code(dic.get('QR'))
 
 if __name__ == "__main__":
     user_info = st.session_state.user_info
+    info = st.session_state.incomplete_info
     functions.make_sidebar()
     main()

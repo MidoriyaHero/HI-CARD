@@ -34,11 +34,17 @@ def save_user_data(age,name,phone,anamnesis):
     st.success("Profile updated successfully!")
     st.balloons()
 
+def check_profile(age, name, phone):
+    if age == None or name == None or phone == None or age == '' or name == '' or phone == '':
+        st.session_state["incomplete_info"] = True
+    else:  
+        st.session_state["incomplete_info"] = False
+
 def display_profile():
     age,name,phone,anamnesis = load_user()
-    name = st.text_input("Name:",name)
-    age = st.text_input("Age:",age)
-    phone = st.text_input("phone:", phone)
+    name = st.text_input("Name: *",name)
+    age = st.text_input("Age: *",age)
+    phone = st.text_input("Phone: *", phone)
     anamnesis = st.text_area("Anamnesis:",anamnesis)
     return age,name, phone, anamnesis
 
@@ -47,14 +53,19 @@ def main():
     # Create the form
     with st.form("user_profile_form"):
         age,name, phone, anamnesis = display_profile()
+        check_profile(age,name, phone)
         submitted = st.form_submit_button("Save Profile")
-
         if submitted:
-            save_user_data(age,name, phone, anamnesis)
-
+            check_profile(age, name, phone)
+            if st.session_state.incomplete_info == False:
+                save_user_data(age,name, phone, anamnesis)
+            else:
+                st.warning('Please complete your profile')
 if __name__ == "__main__":
+    st.set_page_config(page_title="HI-card", layout="centered", initial_sidebar_state="auto", menu_items=None)
     functions.make_sidebar()
     user_info = st.session_state.user_info
+    info = st.session_state.incomplete_info
     #st.write(user_info)
     st.header(f"Hi, {user_info['displayName']}")
     st.markdown('this page is used to register and update your information')
