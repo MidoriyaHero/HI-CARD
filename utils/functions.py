@@ -6,16 +6,23 @@ import json
 from time import sleep
 from streamlit.runtime.scriptrunner import get_script_run_ctx
 from streamlit.source_util import get_pages
+import re
 
 key_dict = json.loads(st.secrets["firebasekey"])
 api = key_dict['api']
 
-def create_user(email, password,username):
-    user = auth.create_user(email = email, password = password,uid="user-"+email,display_name = username)
-    st.success('Account created successfully!')
-    st.markdown('Please Login using your email and password')
-    st.balloons()
+def is_valid_email(email):
+  regex = r'^[a-z0-9.+_-]+@[a-z0-9.-]+\.[a-z]{2,}$'
+  return bool(re.match(regex, email))
 
+def create_user(email, password,username):
+    if is_valid_email(email):
+        user = auth.create_user(email = email, password = password,uid="user-"+email,display_name = username)
+        st.success('Account created successfully!')
+        st.markdown('Please Login using your email and password')
+        st.balloons()
+    else:
+        st.warning("Invalid email enter again!")
 def user_sign_in(email, password, return_secure_token=True):
     payload = json.dumps({"email":email, "password":password, "return_secure_token":return_secure_token})
     #change API KEY to your API key

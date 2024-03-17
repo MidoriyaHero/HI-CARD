@@ -49,6 +49,7 @@ def main():
     if dic.get('QR') is not None:
         download_and_display_qr_code(dic.get('QR'))
     else:
+        
         st.button("Generate QR Code", type="primary")
         qr_code_bytes = generate_qr_code_bytes(data_to_encode)
         download_and_display_qr_code(qr_code_bytes)

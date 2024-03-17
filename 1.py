@@ -1,12 +1,12 @@
-import toml
+import re
 
-output_file = ".streamlit/secrets.toml"
+def is_valid_email(email):
+  regex = r'^[a-z0-9.+_-]+@[a-z0-9.-]+\.[a-z]{2,}$'
+  return bool(re.match(regex, email))
 
-with open("key.json") as json_file:
-    json_text = json_file.read()
-
-config = {"textkey": json_text}
-toml_config = toml.dumps(config)
-
-with open(output_file, "w") as target:
-    target.write(toml_config)
+# Example usage
+email = "rgerg"
+if is_valid_email(email):
+  print("Valid email address")
+else:
+  print("Invalid email address")
