@@ -65,8 +65,8 @@ if __name__ == "__main__":
     st.set_page_config(page_title="HI-card", layout="centered", initial_sidebar_state="auto", menu_items=None)
     functions.make_sidebar()
     user_info = st.session_state.user_info
-    info = st.session_state.incomplete_info
     #st.write(user_info)
     st.header(f"Hi, {user_info['displayName']}")
     st.markdown('this page is used to register and update your information')
     main()
+    info = st.session_state.incomplete_info
