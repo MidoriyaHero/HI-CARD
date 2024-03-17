@@ -12,9 +12,10 @@ def main():
     email = st.text_input('Email Address')
     password = st.text_input('Password',type='password')
     # Add a dropdown to choose between Login and Signup
-    login_or_signup = st.sidebar.selectbox("Login or Signup", ["Login", "Signup"])
+    col1, col2 = st.columns([5, 1])
+    login_or_signup = col2.selectbox("Login or Signup", ["Login", "Signup"])
     if login_or_signup == "Login":
-        if st.button('Login'):
+        if col1.button('Login'):
             functions.user_sign_in(email,password)
         else:
             st.warning('Invalid user! Try again!!!')
