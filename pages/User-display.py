@@ -34,8 +34,8 @@ def save_user_data(age,name,phone,anamnesis):
     st.success("Profile updated successfully!")
     st.balloons()
 
-def check_profile(age, name, phone):
-    if age == None or name == None or phone == None or age == '' or name == '' or phone == '':
+def check_profile(age, name, phone,anamnesis):
+    if age == None or name == None or phone == None or age == '' or name == '' or phone == '' or anamnesis == None or anamnesis =='':
         st.session_state["incomplete_info"] = True
     else:  
         st.session_state["incomplete_info"] = False
@@ -45,7 +45,7 @@ def display_profile():
     name = st.text_input("Name: *",name)
     age = st.text_input("Age: *",age)
     phone = st.text_input("Phone: *", phone)
-    anamnesis = st.text_area("Anamnesis:",anamnesis)
+    anamnesis = st.text_area("Anamnesis *:",anamnesis)
     return age,name, phone, anamnesis
 
 def main():
@@ -53,10 +53,10 @@ def main():
     # Create the form
     with st.form("user_profile_form"):
         age,name, phone, anamnesis = display_profile()
-        check_profile(age,name, phone)
+        check_profile(age,name, phone,anamnesis)
         submitted = st.form_submit_button("Save Profile")
         if submitted:
-            check_profile(age, name, phone)
+            check_profile(age, name, phone,anamnesis)
             if st.session_state.incomplete_info == False:
                 save_user_data(age,name, phone, anamnesis)
             else:
