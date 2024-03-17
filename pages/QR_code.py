@@ -58,5 +58,9 @@ def main():
 if __name__ == "__main__":
     user_info = st.session_state.user_info
     info = st.session_state.incomplete_info
-    functions.make_sidebar()
-    main()
+    
+    col1, col2 = st.columns([5, 1])
+    with col1:
+        main()
+    with col2:
+        functions.make_sidebar()

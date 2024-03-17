@@ -54,22 +54,23 @@ def get_current_page_name():
     return pages[ctx.page_script_hash]["page_name"]
 
 def make_sidebar():
-    with st.sidebar:
-        st.title("Profile setting")
+    #with st.sidebar:
+
+    st.title("Setting")
+    st.write("")
+    st.write("")
+    
+    if st.session_state.get("logged_in", False):
+        st.page_link("pages/User-display.py", label="Setting", icon="⚙️")
+        st.page_link("pages/QR_code.py", label="Generate QR code", icon="🔁")
         st.write("")
         st.write("")
-        
-        if st.session_state.get("logged_in", False):
-            st.page_link("pages/User-display.py", label="Setting", icon="⚙️")
-            st.page_link("pages/QR_code.py", label="Generate QR code", icon="🔁")
-            st.write("")
-            st.write("")
 
-            if st.button("Log out"):
-                logout()
+        if st.button("Log out"):
+            logout()
 
-        elif get_current_page_name() != "main-login":
-            st.switch_page("main-login.py")
+    elif get_current_page_name() != "main-login":
+        st.switch_page("main-login.py")
 
 def logout():
     st.session_state.logged_in = False
