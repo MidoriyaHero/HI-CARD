@@ -8,20 +8,21 @@ import json
 from google.oauth2.service_account import Credentials
 
 def main():
-    col1, col2 = st.columns([5, 1])
-    login_or_signup = col2.selectbox("Login or Signup", ["Login", "Signup"])
-    email = st.text_input('Email Address')
-    password = st.text_input('Password',type='password')
+    container = st.container(border=True)
+    email = container.text_input('Email Address')
+    password = container.text_input('Password',type='password')
     # Add a dropdown to choose between Login and Signup
+    _, col2 = st.columns([5, 1])
+    login_or_signup = col2.selectbox("Login or Signup", ["Login", "Signup"])
     if login_or_signup == "Login":
-        if col1.button('Login'):
+        if container.button('Login') == True:
             functions.user_sign_in(email,password)
         else:
             st.warning('Invalid user! Try again!!!')
 
     elif login_or_signup == "Signup":
-        username = st.text_input("Enter  your username")
-        if st.button('Create my account'):
+        username = container.text_input("Enter  your username")
+        if container.button('Create my account'):
             functions.create_user(email = email, password = password,username=username)
 
 if __name__ == "__main__":
