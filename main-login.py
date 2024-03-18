@@ -17,9 +17,6 @@ def main():
     if login_or_signup == "Login":
         if container.button('Login') == True:
             functions.user_sign_in(email,password)
-        else:
-            st.warning('Invalid user! Try again!!!')
-
     elif login_or_signup == "Signup":
         username = container.text_input("Enter  your username")
         if container.button('Create my account'):
