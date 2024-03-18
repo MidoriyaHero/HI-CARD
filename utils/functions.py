@@ -53,6 +53,25 @@ def get_current_page_name():
 
     return pages[ctx.page_script_hash]["page_name"]
 
+
+def resize_image(image, target_size):
+  width, height = image.size
+  # Determine the dominant axis (width or height) for proper scaling
+  dominant_axis = "width" if width > height else "height"
+
+  # Calculate the new size based on the target size and dominant axis
+  if dominant_axis == "width":
+      new_size = target_size, int(target_size * (height / width))
+  else:
+      new_size = int(target_size * (width / height)), target_size
+
+  # Resize the image using the calculated new size for square shape
+  image.thumbnail(new_size)
+  return image
+
+
+
+
 def make_sidebar():
     #with st.sidebar:
 

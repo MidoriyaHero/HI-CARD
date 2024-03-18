@@ -3,11 +3,79 @@ import streamlit as st
 from firebase_admin import firestore
 import json
 from google.oauth2.service_account import Credentials
+import io
+import base64
+import numpy as np
+from PIL import Image
+
 
 key_dict = json.loads(st.secrets["textkey"])
 creds = Credentials.from_service_account_info(key_dict)
 db = firestore.Client(credentials=creds)
 
+css = '''
+<style>
+    [data-testid='stImage'] {
+        width: 200px;
+        height: 200px;
+        border-radius: 50%;
+        overflow: hidden;
+    }
+    }
+
+    [data-testid='stFileUploader'] {
+        width: max-content;
+    }
+    [data-testid='stFileUploader'] section {
+        padding: 0;
+        float: left;
+    }
+    [data-testid='stFileUploader'] section > input + div {
+        display: none;
+    }
+    [data-testid='stFileUploader'] section + div {
+        float: right;
+        padding-top: 0;
+    }
+
+</style>
+'''
+
+st.markdown(css, unsafe_allow_html=True)
+
+
+def upload_and_convert_image(user_info):
+  uploaded_file = st.file_uploader("Choose your avatar", type=["jpg", "png", "jpeg"],help ='gregrg')
+  if uploaded_file is not None:
+    # Read the image data
+    image_bytes = uploaded_file.read()
+    image = Image.open(io.BytesIO(image_bytes))
+    image = functions.resize_image(image, 600)
+    image1 = io.BytesIO(image_bytes)
+    buffer = io.BytesIO()
+    image.save(buffer, format=image.format)  # Use original format
+    image = buffer.getvalue()
+
+    db = firestore.client()
+    doc_ref = db.collection("Users").document(user_info['localId'])
+    doc_ref.set({'Image': image}, merge=True)
+    
+def load_stored_image():
+    """
+    Loads the stored image data from Firestore and converts it back to a NumPy array.
+    """
+    # Reference to Firestore database (assuming collection exists)
+    db = firestore.client()
+    doc_ref = db.collection("Users").document(user_info['localId'])
+
+    # Get the image data (Base64 string)
+    doc = doc_ref.get()
+    image_data = doc.to_dict().get('Image')
+
+    if image_data is None:
+        return None
+    
+    return st.image(image_data, width=200, use_column_width ='auto') # Or return the PIL Image object
 
 def load_user():
     doc_ref = db.collection("Users").document(user_info['localId'])
@@ -63,14 +131,20 @@ def main():
             else:
                 st.warning('Please complete your profile')
 if __name__ == "__main__":
-    st.set_page_config(page_title="HI-card", layout="centered", initial_sidebar_state="auto", menu_items=None)
     user_info = st.session_state.user_info
     #st.write(user_info)
-    st.header(f"Hi, {user_info['displayName']}")
-    st.markdown('this page is used to register and update your information')
+    col1, col2 = st.columns([2, 3])
+    with col1:
+        load_stored_image()
+        
+    with col2:
+        st.header(f"Hi, {user_info['displayName']}")
+        st.markdown('this page is used to register and update your information')
+        upload_and_convert_image(user_info)
     col1, col2 = st.columns([5, 1])
     with col1:
         main()
     with col2:
         functions.make_sidebar()
     info = st.session_state.incomplete_info
+    
