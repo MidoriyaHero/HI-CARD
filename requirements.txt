@@ -2,3 +2,4 @@ streamlit
 qrcode
 firebase_admin
 Pillow
+streamlit_folium

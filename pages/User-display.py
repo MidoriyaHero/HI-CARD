@@ -139,7 +139,6 @@ if __name__ == "__main__":
         
     with col2:
         st.header(f"Hi, {user_info['displayName']}")
-        st.markdown('this page is used to register and update your information')
         upload_and_convert_image(user_info)
     col1, col2 = st.columns([5, 1])
     with col1:

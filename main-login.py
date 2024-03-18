@@ -15,7 +15,7 @@ def main():
     _, col2 = st.columns([5, 1])
     login_or_signup = col2.selectbox("Login or Signup", ["Login", "Signup"])
     if login_or_signup == "Login":
-        if container.button('Login') == True:
+        if container.button('Login'):
             functions.user_sign_in(email,password)
     elif login_or_signup == "Signup":
         username = container.text_input("Enter  your username")
