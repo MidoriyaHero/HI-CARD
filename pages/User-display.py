@@ -70,12 +70,12 @@ def load_stored_image():
 
     # Get the image data (Base64 string)
     doc = doc_ref.get()
-    image_data = doc.to_dict().get('Image')
-
+    image_data = doc.to_dict()
     if image_data is None:
         return None
-    
-    return st.image(image_data, width=200, use_column_width ='auto') # Or return the PIL Image object
+    else:
+        image_data = image_data.get('Image')
+        return st.image(image_data, width=200, use_column_width ='auto') # Or return the PIL Image object
 
 def load_user():
     doc_ref = db.collection("Users").document(user_info['localId'])
