@@ -113,7 +113,7 @@ def display_profile():
     name = st.text_input("Name: *",name)
     age = st.text_input("Age: *",age)
     phone = st.text_input("Phone: *", phone)
-    anamnesis = st.text_area("Anamnesis: *",anamnesis)
+    anamnesis = st.text_area("Medical history: *",anamnesis)
     return age,name, phone, anamnesis
 
 def main():
